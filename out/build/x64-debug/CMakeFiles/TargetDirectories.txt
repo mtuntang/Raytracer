@@ -1,0 +1,3 @@
+C:/Users/miket/OneDrive/Coding/Projects/Raytracer/out/build/x64-debug/CMakeFiles/Raytracer.dir
+C:/Users/miket/OneDrive/Coding/Projects/Raytracer/out/build/x64-debug/CMakeFiles/edit_cache.dir
+C:/Users/miket/OneDrive/Coding/Projects/Raytracer/out/build/x64-debug/CMakeFiles/rebuild_cache.dir
