@@ -6,7 +6,7 @@
 	A ray is defined by a function P(t)=A+tb where:
 		- A is the ray origin
 		- b is the ray direction
-		- t is a real number pointing at the direction of the ray (+ infront of origin A, - behind origin A)
+		- t is a real number pointing at the direction of the ray (+ infront of origin A, - behind origin A; from 0 to the point value t)
 */
 
 class ray {
