@@ -109,7 +109,8 @@
 				1,
 				2,
 				3,
-				4
+				4,
+				5
 			]
 		}
 	],
@@ -139,6 +140,11 @@
 		{
 			"backtrace" : 1,
 			"path" : "sphere.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "hittable_list.h",
 			"sourceGroupIndex" : 1
 		}
 	],
