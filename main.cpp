@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+//TODO: change this to be useable with hittable objects
 bool hit_sphere(const point3& center, double radius, const ray& r) {
     vec3 oc = r.origin() - center;
     auto a = dot(r.direction(), r.direction());
@@ -24,9 +25,7 @@ color ray_color(const ray& r) {
 }
 
 int main() {
-
     // Image
-
     auto aspect_ratio = 16.0 / 9.0;
     int image_width = 400;
 
