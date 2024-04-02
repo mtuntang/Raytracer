@@ -68,7 +68,6 @@ private:
     /*
     * The function is recursive and simulates the behavior of light as it scatters off surfaces.
     * This means the ray might bounce off surfaces multiple times, with each bounce represented by a recursive call.
-    * TODO: Limit the number of bounces
     */ 
     color ray_color(const ray& r, int depth, const hittable& world) const {
         hit_record rec;
@@ -76,12 +75,13 @@ private:
         if (depth <= 0)
             return color(0, 0, 0);
 
-        if (world.hit(r, interval(0, infinity), rec)) {
-            /*
-            Diffusion is simulated by scattering the ray in a random direction based on the surface normal. 
-            The recursion applies an attenuation factor [0, 1], simulating the absorption of light with each bounce. 
-            Ray bounces 100% when the surface is white, 0% bounce or completely absorbed if black.
-            */
+        /*
+           Diffusion is simulated by scattering the ray in a random direction based on the surface normal.
+           The recursion applies an attenuation factor [0, 1], simulating the absorption of light with each bounce.
+           Ray bounces 100% when the surface is white, 0% bounce or completely absorbed if black.
+           The interval starts from 0.001 to avoid shadow acne caused by self-intersection from floating point issues
+         */
+        if (world.hit(r, interval(0.001, infinity), rec)) {
             vec3 direction = random_on_hemisphere(rec.normal);
             return 0.5 * ray_color(ray(rec.p, direction), depth-1, world);
         }
