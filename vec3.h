@@ -103,6 +103,33 @@ inline vec3 unit_vector(vec3 v) {
     return v / v.length();
 }
 
+inline vec3 random_in_unit_sphere() {
+    while (true) {
+        auto p = vec3::random(-1, 1);
+        // x^2 + y^2 + z^2 < 1. If the point satisfies this condition, it lies within the unit sphere
+        if (p.length_squared() < 1)
+            return p;
+    }
+}
+
+
+inline vec3 random_unit_vector() {
+    return unit_vector(random_in_unit_sphere());
+}
+
+/*
+Generates a random unit vector inside the surface of the unit sphere using a rejection method, 
+then takes the dot product of the surface normal and our random vector to determine if it's in 
+the correct side/hemisphere (ray bounces inwards or outwards, we want outwards or +)
+*/ 
+inline vec3 random_on_hemisphere(const vec3& normal) {
+    vec3 on_unit_sphere = random_unit_vector();
+    if (dot(on_unit_sphere, normal) > 0.0) // In the same hemisphere as the normal
+        return on_unit_sphere;
+    else
+        return -on_unit_sphere;
+}
+
 // Type aliases for vec3
 using point3 = vec3;   // 3D point
 using color = vec3;    // RGB color

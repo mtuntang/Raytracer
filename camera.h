@@ -12,6 +12,7 @@ public:
     double aspect_ratio = 1.0;  // Ratio of image width over height
     int    image_width = 100;  // Rendered image width in pixel count
     int    samples_per_pixel = 10;   // Count of random samples for each pixel
+    int    max_depth = 10;   // Maximum number of ray bounces into scene
 
     void render(const hittable& world) {
         initialize();
@@ -23,7 +24,7 @@ public:
                 color pixel_color(0, 0, 0);
                 for (int sample = 0; sample < samples_per_pixel; ++sample) {
                     ray r = get_random_ray(i, j);
-                    pixel_color += ray_color(r, world);
+                    pixel_color += ray_color(r, max_depth, world);
                 }
                 write_color(std::cout, pixel_color, samples_per_pixel);
             }
@@ -64,11 +65,25 @@ private:
         pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
     }
 
-    color ray_color(const ray& r, const hittable& world) const {
+    /*
+    * The function is recursive and simulates the behavior of light as it scatters off surfaces.
+    * This means the ray might bounce off surfaces multiple times, with each bounce represented by a recursive call.
+    * TODO: Limit the number of bounces
+    */ 
+    color ray_color(const ray& r, int depth, const hittable& world) const {
         hit_record rec;
 
+        if (depth <= 0)
+            return color(0, 0, 0);
+
         if (world.hit(r, interval(0, infinity), rec)) {
-            return 0.5 * (rec.normal + color(1, 1, 1));
+            /*
+            Diffusion is simulated by scattering the ray in a random direction based on the surface normal. 
+            The recursion applies an attenuation factor [0, 1], simulating the absorption of light with each bounce. 
+            Ray bounces 100% when the surface is white, 0% bounce or completely absorbed if black.
+            */
+            vec3 direction = random_on_hemisphere(rec.normal);
+            return 0.5 * ray_color(ray(rec.p, direction), depth-1, world);
         }
 
         vec3 unit_direction = unit_vector(r.direction());
