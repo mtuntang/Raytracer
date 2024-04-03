@@ -3,11 +3,14 @@
 
 #include "ray.h"
 
+class material;
+
 class hit_record {
 public:
     point3 p;
     vec3 normal;
     double t;
+    shared_ptr<material> mat;
 };
 
 class hittable {
