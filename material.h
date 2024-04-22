@@ -22,7 +22,7 @@ public:
     bool scatter(const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered)
         const override {
         auto scatter_direction = rec.normal + random_unit_vector();
-        // Avoids scenario where random vec generated equals to -normal vec.
+        // Avoids scenario where random vec generated equals to -normal vec, hence scatter direction ends up being 0
         if (scatter_direction.near_zero())
             scatter_direction = rec.normal;
 
