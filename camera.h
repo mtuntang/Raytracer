@@ -4,6 +4,7 @@
 #include "raytracer.h"
 #include "color.h"
 #include "hittable.h"
+#include "material.h"
 
 #include <iostream>
 
@@ -75,21 +76,12 @@ private:
 		if (depth <= 0)
 			return color(0, 0, 0);
 
-		/*
-		   Diffusion is simulated by scattering the ray in a random direction based on the surface normal.
-		   The recursion applies an attenuation factor [0, 1], simulating the absorption of light with each bounce.
-		   Ray bounces 100% when the surface is white, 0% bounce or completely absorbed if black.
-		   The interval starts from 0.001 to avoid shadow acne caused by self-intersection from floating point issues
-		 */
 		if (world.hit(r, interval(0.001, infinity), rec)) {
-			/* Lambertian reflection is simulated by adding a random unit vector to the surface normal,
-			 introducing a bias towards the normal but still providing a computationally efficient
-			 and visually plausible model of diffuse scattering compared with rejection sampling that is more uniformly distributed but 
-			 more expensive due to random iterative ray generation.
-			 */
-			vec3 direction = rec.normal + random_unit_vector();
-			auto a_factor = 0.5;
-			return a_factor * ray_color(ray(rec.p, direction), depth - 1, world);
+			ray scattered;
+			color attenuation;
+			if (rec.mat->scatter(r, rec, attenuation, scattered))
+				return attenuation * ray_color(scattered, depth - 1, world);
+			return color(0, 0, 0);
 		}
 
 		vec3 unit_direction = unit_vector(r.direction());
