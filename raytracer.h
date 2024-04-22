@@ -12,6 +12,7 @@
 using std::shared_ptr;
 using std::make_shared;
 using std::sqrt;
+using std::fabs;
 
 // CONSTANTS
 const double infinity = std::numeric_limits<double>::infinity();
