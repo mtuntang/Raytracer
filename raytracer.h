@@ -1,13 +1,11 @@
 #ifndef RAYTRACER_H
 #define RAYTRACER_H
 
-#include "interval.h"
-#include "ray.h"
-#include "vec3.h"
 #include <cmath>
+#include <cstdlib>
+#include <iostream>
 #include <limits>
 #include <memory>
-#include <random>
 
 using std::shared_ptr;
 using std::make_shared;
@@ -33,4 +31,8 @@ inline double random_double(double min, double max) {
     return min + (max - min) * random_double();
 }
 
+#include "color.h"
+#include "interval.h"
+#include "ray.h"
+#include "vec3.h"
 #endif
