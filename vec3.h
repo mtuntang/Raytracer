@@ -124,6 +124,19 @@ inline vec3 random_unit_vector() {
 }
 
 /*
+Without defocus blur, all scene rays originate from the camera center (or lookfrom).
+In order to accomplish defocus blur, we construct a disk centered at the camera center. 
+The larger the radius, the greater the defocus blur.
+*/
+inline vec3 random_in_unit_disk() {
+    while (true) {
+        auto p = vec3(random_double(-1, 1), random_double(-1, 1), 0);
+        if (p.length_squared() < 1)
+            return p;
+    }
+}
+
+/*
 Generates a random unit vector inside the surface of the unit sphere using a rejection method, 
 then takes the dot product of the surface normal and our random vector to determine if it's in 
 the correct side/hemisphere (ray bounces inwards or outwards, we want outwards or +)
