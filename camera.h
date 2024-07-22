@@ -12,6 +12,7 @@ class camera {
 public:
 	double aspect_ratio = 1.0;  // Ratio of image width over height
 	int    image_width = 100;  // Rendered image width in pixel count
+	int    image_height;			// Rendered image height
 	int    samples_per_pixel = 10;   // Count of random samples for each pixel
 	int    max_depth = 10;   // Maximum number of ray bounces into scene
 
@@ -43,8 +44,15 @@ public:
 		std::clog << "\rDone.                 \n";
 	}
 
+	ray get_private_ray_defocus(int u, int v) {
+		return get_ray_defocus(u, v);
+	}
+	
+	color get_ray_color(const ray& r, int depth, const hittable& world) {
+		return ray_color(r, depth, world);
+	}
+
 private:
-	int    image_height;			// Rendered image height
 	double pixel_samples_scale;		// Color scale factor for a sum of pixel samples
 	point3 center;					// Camera center
 	point3 pixel00_loc;				// Location of pixel 0, 0
@@ -155,5 +163,9 @@ private:
 		return (px * pixel_delta_u) + (py * pixel_delta_v);
 	}
 };
+
+ray get_private_ray_defocus(const camera& cam, int u, int v) {
+	return cam.get_ray_defocus(u, v);
+}
 
 #endif
